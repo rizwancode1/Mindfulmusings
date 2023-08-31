@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" method="POST" class="form-container">{% csrf_token %}
+    <div class="form_row" style= "margin-bottom:10px;">
+        {{ form.image.label_tag }}
+        {{ form.image }}
+    </div>
+    <div class="form_row" >
+        {{ form.title.label_tag }}
+        {{ form.title }}
+    </div>
+    <div class="form_row">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+    </div>
+
+    <div class="form_row">
+        <div class="form__group">
+            <label for="category">Choose/Enter category</label>
+            <input type="text" name="category" list="category-list" style= "width:95%;">
+            <datalist id="category-list">
+                {% for category in categories_list %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
+
+    <div class="form_row">
+        <div class="form__group">
+            <label for="tag">Choose/Enter tag</label>
+            <input type="text" name="tag" list="tag-list" style= "width:95%;">
+            <datalist id="tag-list">
+                {% for tag in tags_list %}
+                    <option value="{{ tag.hashtag }}">{{ tag.hashtag }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
+
+    <button type="submit">Create</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <div class="like-buttons">
+        
+        <button id="listbutton" type="button">Articles List</button>
+    </div>
+    <div class="container">
+        {% for article in articles %}
+            <div class="article">
+                <div class="article-image">
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                </div>
+                <div class="article-content">
+                    <h2>{{ article.title }}</h2>
+                    <p>{{ article.content|truncatechars:150 }}</p>
+                    <a href="{% url 'article-detail' article.id %}">Read more</a>
+                
+                </div>
+            </div>
+        {% endfor %}
+
+    <script>
+        document.getElementById("listbutton").addEventListener('click', function(){
+  var Url = "{% url 'list-article' %}";
+  window.location.href = Url;
+})
+    </script>
+
+{% endblock content %}
+
+

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> Create Article </h1>
+
+
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        
+        <label for="id_title">Title:</label>
+        <input type="text" id="id_title" name="title" value="{{ article.title }}" required>
+        <br>
+        
+        <label for="id_content">Content:</label>
+        <textarea id="id_content" name="content" required>{{ article.content }}</textarea>
+        <br>
+        
+
+
+        <label for="id_categories">Categories:</label>
+
+        <input required type="text" name="categories" list="categories-list">
+<datalist id="categories-list">
+    {% for category in categories %}
+        <option value="{{ category.name }}">{{ category.name }}</option>
+    {% endfor %}
+</datalist>
+
+
+
+
+              {% comment %} <label for="id_categories">Categories:</label>
+              <input required type="text" name="categories" id="categories" list="categories-list">
+              <button type="button" id="add-category-button">Add New Category</button>
+              
+              <datalist id="categories-list">
+                  {% for category in categories %}
+                  <option value="{{ category.name }}">
+                  {% endfor %}
+              </datalist>
+              
+              <div id="new-category-input" style="display: none;">
+                  <input type="text" id="new-category" placeholder="Enter new category">
+                  <button type="button" id="save-new-category">Save</button>
+              </div>
+               {% endcomment %}
+              
+              
+
+        <label for="id_tag">Tags:</label>
+        <input required type="text" name="tag" list="Tag-list">
+              <datalist id="tag-list">
+                <select id="tag_hashtag">
+                    {% for t in tag %}
+                  <option value="{{ t.hashtag }}">{{ t.hashtag }}</option>
+                  {% endfor %}
+                </select>
+              </datalist>
+        
+        <button type="submit">Create</button>
+
+
+
+        <script>
+          const addCategoryButton = document.getElementById("add-category-button");
+          const newCategoryInput = document.getElementById("new-category-input");
+          const newCategoryField = document.getElementById("new-category");
+          const saveNewCategoryButton = document.getElementById("save-new-category");
+      
+          addCategoryButton.addEventListener("click", () => {
+              addCategoryButton.style.display = "none";
+              newCategoryInput.style.display = "block";
+              newCategoryField.focus();
+          });
+      
+          saveNewCategoryButton.addEventListener("click", () => {
+              const newCategoryValue = newCategoryField.value;
+              if (newCategoryValue.trim() !== "") {
+                  const dataList = document.getElementById("categories-list");
+                  const option = document.createElement("option");
+                  option.value = newCategoryValue;
+                  dataList.appendChild(option);
+                  newCategoryField.value = "";
+              }
+              newCategoryInput.style.display = "none";
+              addCategoryButton.style.display = "block";
+          });
+      </script>
+      
+
+{% endblock content %}
+

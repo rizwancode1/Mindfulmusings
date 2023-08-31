@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update your article</h1>
+    <form action="" method="POSt"  class="form-container"> {% csrf_token %}   
+        {{form.as_p}}
+        <button type="submit">Update</button> <button id="cancelButton" type="button">Cancel</button>
+        <!-- <p><a href="../">Cancil</a> </p> -->
+        
+    </form>
+
+
+
+
+    <!-- <script>
+        document.getElementById("cancelButton").addEventListener('click', function(){
+            window.location = "../"
+        })
+       
+    </script> -->
+{% endblock content %}

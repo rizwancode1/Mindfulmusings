@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="article-container">
+  {% if request.user == article.author %}
+  <div class="like-buttons">
+    <button id="editButton" type="button">Edit</button>
+    <button id="deleteButton" type="button">Delete</button>
+  </div>
+  {% endif %}
+    <div class="article-detail-image">
+      <img src="{{ article.image.url}}" alt="{{ article.title }}">
+    </div>
+
+  <h2 class="article-title">{{ article.title }}</h2>
+  <p class="article-content">{{ article.content }}</p>
+  <p>Likes: <span id="likes">{{ article.likes.count }}</span></p>
+  
+  <div class="like-buttons">
+      <button id="unlikeButton" data-action="{% url 'unlike' article.id %}">Unlike</button>
+      <button id="likeButton" data-action="{% url 'like' article.id %}">Like</button>
+  </div>
+
+  <div class="comments">
+      {% for comment in comments %}
+      <p>{{ comment.content }} - {{ comment.created_at|date }} @ {{ comment.author }}</p>
+      {% endfor %}
+  </div>
+
+  <div class="comment-form">
+    <form action="" method="post" class="comment-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <!-- {{ form.content.label_tag }} -->
+            <label for="">Write your comment</label>
+            <div class="comment-input-container">
+                {{ form.content }}
+            </div>
+        </div>
+        <button type="submit" class="comment-button">Comment</button>
+    </form>
+</div>
+<script>
+
+  // detail page js 
+document.getElementById("editButton").addEventListener('click', function(){
+  var updateUrl = "{% url 'update-article' article.id %}";
+  window.location.href = updateUrl;
+})
+
+document.getElementById("deleteButton").addEventListener("click", function() {
+  var deleteUrl = "{% url 'delete-article' article.id %}";
+  window.location.href = deleteUrl;
+});
+
+
+
+
+const likeButton = document.getElementById('likeButton');
+  const unlikeButton = document.getElementById('unlikeButton');
+  const likesSpan = document.getElementById('likes');
+
+  likeButton.addEventListener('click', () => {
+    updateLikes(likeButton.getAttribute('data-action'));
+  });
+
+  unlikeButton.addEventListener('click', () => {
+    updateLikes(unlikeButton.getAttribute('data-action'));
+  });
+
+  console.log('hi')
+
+  function updateLikes(url) {
+    fetch(url, {
+      method: 'GET',  // Or 'GET' depending on your view
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      likesSpan.textContent = data.likes;
+    })
+    .catch(error => {
+      console.error('Error updating likes:', error);
+    });
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+</script>
+
+{% endblock %}

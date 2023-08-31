@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderlustWritings</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>MindfulMusings</h1>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'new-article' %}">Create Article</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories</a>
+                    <div class="dropdown-content">
+                        {% for category in categories %}
+                        {% if category %}
+                        <a href="{% url 'home' %}?q={{category.name}} ">{{category.name}}
+                            <span>({{category.article_set.all.count}})</span> </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+
+            <div class="search-form">
+                <form action="#" method="get">
+                    <input type="text" name="q" placeholder="Search articles">
+                    
+                        <button type="submit">Search</button>
+                    
+                </form>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        replace me
+        {% endblock content %}
+    </main>
+
+    <footer>
+
+    </footer>
+    <script src="{% static 'script/script.js' %}"></script>
+</body>
+
+</html>
